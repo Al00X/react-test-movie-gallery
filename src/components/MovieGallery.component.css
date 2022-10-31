@@ -1,0 +1,12 @@
+.movie-desc {
+    height: 4.5rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 1.5rem;
+    display: inline-block;
+    -webkit-line-clamp: 3;
+    padding: 0 3rem;
+    margin-top: 1rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
