@@ -1,6 +1,7 @@
 import Error from "../components/Error.component";
-import useStorage, {STORE_USERNAME} from "../utilities/storage";
+import useStorage from "../utilities/storage";
 import {useNavigate} from "react-router";
+import {STORE_USERNAME} from "../store-keys";
 
 export default function useAuthService() {
     const navigator = useNavigate();

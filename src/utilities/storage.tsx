@@ -1,12 +1,11 @@
 import { useState } from "react";
 
+// Used this token to save your localStorage keys and use it with useStorage()
 export class StoreToken {
   constructor(public key: string) {}
 }
 
-export const STORE_USERNAME = new StoreToken("username");
-
-// [ localStorageValue, setLocalStorageValue]
+// return => Array [ localStorageValue, setLocalStorageValue]
 export default function useStorage(token: StoreToken | string) {
   const [value, setValue] = useState(StorageAdapter.get(token));
   return [

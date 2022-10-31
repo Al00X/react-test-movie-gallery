@@ -2,12 +2,14 @@ import { useState } from "react";
 import Error from "../components/Error.component";
 import Loader from "../components/Loader.component";
 
-// R = Result, A = Args
-// opt as function acts like onSuccess() callback
-
 const DEFAULT_ERROR = <Error text="" />;
 
-// [ result, invokePromiseFn(), additionalInfo, ]
+// if you pass a function as opt (second parameter), it'll act like onSuccess() callback,
+// or you can pass an object for more callbacks, just like .subscribe() in RXJS
+//
+// generic R = Result, A = Args
+//
+// return => Array [ result, invokePromiseFn(), additionalInfo ]
 export default function usePromise<R, A>(
   promiseFn: (args?: A) => Promise<R>,
   opt?:
