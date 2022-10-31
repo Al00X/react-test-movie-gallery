@@ -36,13 +36,13 @@ export default function Login() {
           className="w-full"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
+          placeholder="Username: anything"
         />
         <input
           className="w-full"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder="Password: 1234"
           type="password"
         />
         <Button
