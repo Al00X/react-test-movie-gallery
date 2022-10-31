@@ -8,7 +8,7 @@ export default function HomeLayout() {
     return <AuthGuard>
         <div className="w-full flex items-center p-4 bg-primary-darkest border-b-2 border-primary-darker relative">
             <p className="font-bold text-3xl">THE MOVIE ARCHIVE</p>
-            <span className="ml-auto">Welcome home {auth.username} !</span>
+            <span className="ml-auto">Welcome home {auth.state?.username} !</span>
             <div className="flex gap-4 ml-6">
                 <Button className="w-full">Favorites</Button>
                 <Button className="w-full" onClick={auth.logout}>Logout</Button>

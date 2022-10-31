@@ -1,3 +1,5 @@
-import {StoreToken} from "./utilities/storage";
+import { StoreToken } from "./utilities/useStorage";
 
-export const STORE_USERNAME = new StoreToken("username");
+export const AUTH_STORAGE_TOKEN = new StoreToken<{
+    username: string;
+}>("auth");

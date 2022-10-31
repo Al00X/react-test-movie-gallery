@@ -1,17 +1,19 @@
 import Error from "../components/Error.component";
-import useStorage from "../utilities/storage";
+import useStorage from "../utilities/useStorage";
 import {useNavigate} from "react-router";
-import {STORE_USERNAME} from "../store-keys";
+import {AUTH_STORAGE_TOKEN} from "../store-keys";
 
 export default function useAuthService() {
     const navigator = useNavigate();
-    const [username, setUsername] = useStorage(STORE_USERNAME);
+    const [auth, setAuth] = useStorage(AUTH_STORAGE_TOKEN);
     return {
         login: (username: string, password: string) => {
             return new Promise<boolean>((resolve, reject) => {
                 setTimeout(() => {
                     if (password === '1234') {
-                        setUsername(username);
+                        setAuth({
+                            username
+                        });
                         resolve(true);
                     } else {
                         reject(<Error text="Wrong password, please try again."/>);
@@ -20,10 +22,10 @@ export default function useAuthService() {
             })
         },
         logout: () => {
-            setUsername(null);
+            setAuth(null);
             navigator('/login');
         },
-        isAuthenticated: username !== null,
-        username: username,
+        isAuthenticated: !!auth?.username,
+        state: auth,
     }
 }
