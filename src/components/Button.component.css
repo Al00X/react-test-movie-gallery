@@ -1,0 +1,16 @@
+button {
+    @apply text-white border border-primary-bright bg-primary-dark;
+    padding: 0.5rem;
+    outline: 0 !important;
+    border-radius: 8px;
+}
+button:disabled {
+    filter: brightness(64%) saturate(50%);
+    pointer-events: none;
+}
+button:not(:disabled):hover {
+    filter: brightness(105%);
+}
+button:active {
+    filter: brightness(95%);
+}
