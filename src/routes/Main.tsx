@@ -1,7 +1,7 @@
 import MovieGallery from "../components/MovieGallery.component";
 import { useState } from "react";
 
-export default function Home() {
+export default function Main() {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
