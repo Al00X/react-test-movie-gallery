@@ -6,7 +6,7 @@ export class StoreToken<T> {
   constructor(public key: string) {}
 }
 
-// return => Array [ localStorageValue, setLocalStorageValue]
+// return => Array [ localStorageValue, setLocalStorageValue, patchLocalStorageValue]
 export default function useStorage<T>(token: StoreToken<T> | string) {
   const [value, setValue] = useState(StorageAdapter.get(token));
   return [
@@ -15,7 +15,15 @@ export default function useStorage<T>(token: StoreToken<T> | string) {
       setValue(newValue);
       StorageAdapter.set(token, newValue);
     },
-  ] as [T | null, (value: T | null) => void];
+    (newValue: Partial<T>) => {
+      const patchedValue: any = {
+        ...value ?? {},
+        newValue
+      };
+      setValue(patchedValue);
+      StorageAdapter.set(token, patchedValue);
+    }
+  ] as [T | null, (value: T | null) => void, (value: Partial<T>) => void];
 }
 
 // Helper for localStorage api

@@ -1,7 +1,7 @@
 export interface PaginatedResponse<T> {
   page: number;
   results: T[];
-  dates: {
+  dates?: {
     maximum: string;
     minimum: string;
   };

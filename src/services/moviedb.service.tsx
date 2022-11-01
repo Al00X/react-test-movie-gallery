@@ -11,6 +11,11 @@ const http = axios.create({
 })
 export default function useMovieDbService() {
     return {
-        getUpcoming: () => http.get<PaginatedResponse<Movie>>('/movie/upcoming')
+        getUpcoming: () => http.get<PaginatedResponse<Movie>>('/movie/upcoming'),
+        search: (term: string) => http.get<PaginatedResponse<Movie>>('/search/movie', {
+            params: {
+                query: term,
+            }
+        })
     }
 }

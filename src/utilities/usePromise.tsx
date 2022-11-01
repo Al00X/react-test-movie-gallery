@@ -2,10 +2,9 @@ import { useState } from "react";
 import Error from "../components/Error.component";
 import Loader from "../components/Loader.component";
 
-const DEFAULT_ERROR = <Error text="" />;
-
 // if you pass a function as opt (second parameter), it'll act like onSuccess() callback,
-// or you can pass an object for more callbacks, just like .subscribe() in RXJS
+// or you can pass an object for more callbacks, just like .subscribe() in RXJS.
+// Supports Axios error message response
 //
 // generic R = Result, A = Args
 //
@@ -21,14 +20,13 @@ export default function usePromise<R, A>(
     | ((result: R) => void)
 ) {
   const [result, setResult] = useState<R | null>(null);
-  const [rawError, setRawError] = useState<any | null>(null);
-  const [error, setError] = useState<JSX.Element>(DEFAULT_ERROR);
+  const [error, setError] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
   return [
     result,
     (args?: A) => {
-      setRawError(null);
-      setError(DEFAULT_ERROR);
+      setError(null);
       setResult(null);
       setLoading(true);
 
@@ -42,8 +40,7 @@ export default function usePromise<R, A>(
         })
         .catch((error) => {
           if (!isOptFn && opt?.onError) opt.onError(error);
-          setRawError(error);
-          setError(<Error text={error} />);
+          setError(error);
         })
         .finally(() => {
           if (!isOptFn && opt?.onFinally) opt.onFinally();
@@ -51,10 +48,10 @@ export default function usePromise<R, A>(
         });
     },
     {
-      errorElement: error,
-      error: rawError,
+      errorElement: error ? <Error text={error?.message ?? error} /> : null,
+      error: error,
       loading: loading,
-      loaderElement: loading ? <Loader/> : null
+      loaderElement: loading ? <Loader /> : null,
     },
   ] as [
     R | null,
@@ -63,7 +60,7 @@ export default function usePromise<R, A>(
       errorElement: JSX.Element | null;
       error: any | null;
       loading: boolean;
-      loaderElement: JSX.Element | null
+      loaderElement: JSX.Element | null;
     }
   ];
 }
