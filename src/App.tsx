@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Routes} from "react-router";
 import Login from "./routes/Login";
 import HomeLayout from "./layouts/Home.layout";
-import Main from "./routes/Home";
+import Main from "./routes/Main";
 import Favorites from "./routes/Favorites";
 
 export default function App() {
