@@ -2,36 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+html,
+body,
+#root {
   background: #12121f;
   color: #edf2f5;
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100vh;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-input, textarea {
+input,
+textarea {
   @apply text-white border border-primary-bright bg-primary-dark;
   padding: 0.5rem;
   outline: 0 !important;
   border-radius: 8px;
 }
-input:hover, textarea:hover {
+input:hover,
+textarea:hover {
   filter: brightness(105%);
 }
 
@@ -39,7 +43,7 @@ input:hover, textarea:hover {
   @apply transition-all flex flex-col items-center justify-center border border-primary-dark hover:border-primary-normal bg-primary-darkest bg-opacity-0 hover:bg-opacity-100 rounded-2xl p-4;
 }
 .ui-panel:hover {
-  box-shadow: 0px 7px 6px 3px rgba(0,0,0,0.22);
+  box-shadow: 0px 7px 6px 3px rgba(0, 0, 0, 0.22);
 }
 
 a {

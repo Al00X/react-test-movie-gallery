@@ -1,7 +1,7 @@
-import {useState} from "react";
+import { useState } from "react";
 import usePromise from "../utilities/usePromise";
 import Button from "../components/Button.component";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 import useAuthService from "../services/auth.service";
 import useOnInit from "../utilities/onInit";
 
@@ -17,7 +17,7 @@ export default function Login() {
     (result) => {
       if (result) {
         setTimeout(() => {
-          navigator('/');
+          navigator("/");
         }, 5000);
       }
     }
@@ -25,13 +25,13 @@ export default function Login() {
 
   useOnInit(() => {
     if (auth.isAuthenticated) {
-      navigator('/');
+      navigator("/");
     }
-  })
+  });
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="ui-panel gap-6 p-24 w-1/4">
+      <div className="ui-panel gap-6 p-24 w-3/4 lg:w-1/4">
         <input
           className="w-full"
           value={username}
@@ -56,9 +56,8 @@ export default function Login() {
         <div className="w-full flex items-center justify-center">
           {loginResult ? (
             <span className="text-center">
-              Logged in successfully, welcome to the super-secret movies archive.
-              facility
-              You will be redirected shortly...
+              Logged in successfully, welcome to the super-secret movies
+              archive. facility You will be redirected shortly...
             </span>
           ) : (
             optsLogin.errorElement
