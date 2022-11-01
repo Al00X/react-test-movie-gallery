@@ -5,19 +5,15 @@ import usePromise from "../utilities/usePromise";
 import { ENVIRONMENT } from "../environment";
 import { useEffect, useState } from "react";
 import useUserService from "../services/user.service";
-import { Movie } from "../models/moviedb.models";
+import {IMovie, UIMovie} from "../models/moviedb.models";
 import useDebounce from "../utilities/useDebounce";
 import Button from "./Button.component";
-
-interface MovieUi extends Movie {
-  favorite: boolean;
-}
 
 export default function MovieGallery(props: { searchTerm?: string }) {
   const userService = useUserService();
   const movieDbService = useMovieDbService();
 
-  const [movies, setMovies] = useState<MovieUi[] | undefined>(undefined);
+  const [movies, setMovies] = useState<UIMovie[] | undefined>(undefined);
   const debouncedSearchTerm = useDebounce<
     string | undefined
   >(props.searchTerm ?? undefined, 300);
@@ -50,20 +46,20 @@ export default function MovieGallery(props: { searchTerm?: string }) {
     }
   }, [debouncedSearchTerm]);
 
-  function updateMovies(movies: Movie[] | undefined) {
+  function updateMovies(movies: IMovie[] | undefined) {
     if (movies === undefined) {
       setMovies(undefined);
       return;
     }
-    const userFavorites = userService.state?.favorites ?? [];
+    const userCollectionIds = Object.keys(userService.state?.collection ?? {});
     setMovies(movies.map(x => ({
       ...x,
-      favorite: userFavorites.includes(x.id)
+      favorite: userService.collectionIds.includes(x.id),
     })))
   }
 
-  function toggleMovieFavorite(item: MovieUi) {
-    userService.toggleFavorite(item.id);
+  function toggleMovieFavorite(item: UIMovie) {
+    userService.toggleFavorite(item);
     item.favorite = !item.favorite;
   }
 
@@ -82,11 +78,11 @@ export default function MovieGallery(props: { searchTerm?: string }) {
           {movies!.map((item, index) => (
             <div
               key={item.id}
-              className="ui-panel relative w-full h-full cursor-pointer py-8 rounded-xl p-0 flex flex-col items-center"
+              className="ui-panel relative w-full h-full py-8 rounded-xl p-0 flex flex-col items-center"
             >
-              <Button className={`${item.favorite ? 'bg-error text-white border-white' : 'text-primary-bright'} absolute left-2 top-2 text-xs p-1`} onClick={() => toggleMovieFavorite(item)}>Favorite</Button>
+              <Button className={`${item.favorite ? 'bg-error text-white border-white' : 'text-primary-bright opacity-70'} transition-all absolute left-2 top-2 text-xs p-1`} onClick={() => toggleMovieFavorite(item)}>Favorite</Button>
               <div
-                className="overflow-hidden rounded-lg"
+                className="overflow-hidden rounded-lg bg-primary-darkest"
                 style={{ width: 300, height: 450 }}
               >
                 <img
@@ -94,7 +90,7 @@ export default function MovieGallery(props: { searchTerm?: string }) {
                   src={
                     ENVIRONMENT.TheMovieDbImagesBaseUrl(300) + item.poster_path
                   }
-                  alt={item.title}
+                  alt="no cover"
                 />
               </div>
               <span className="text-2xl font-bold mt-4 flex flex-col items-center gap-2 px-8 text-center">

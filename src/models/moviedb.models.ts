@@ -9,7 +9,7 @@ export interface PaginatedResponse<T> {
   total_results: number;
 }
 
-export interface Movie {
+export interface IMovie {
   id: number;
   poster_path: string;
   adult: boolean;
@@ -24,4 +24,9 @@ export interface Movie {
   vote_count: number;
   video: false;
   vote_average: number;
+}
+
+export interface UIMovie extends IMovie {
+  comment?: string;
+  favorite?: boolean;
 }

@@ -1,43 +1,53 @@
 import useStorage from "../utilities/useStorage";
-import {USER_STORAGE_TOKEN} from "../store-keys";
+import { USER_STORAGE_TOKEN } from "../store-keys";
 import useOnInit from "../utilities/onInit";
+import { IMovie } from "../models/moviedb.models";
+import { useMemo } from "react";
 
 export default function useUserService() {
-    const [userStore, setUserStore, patchUserStore] = useStorage(USER_STORAGE_TOKEN);
+  const [userStore, setUserStore, patchUserStore] =
+    useStorage(USER_STORAGE_TOKEN);
 
-    useOnInit(() => {
-        if (userStore === null) {
-            setUserStore({
-                favorites: [],
-                comments: {},
-            })
-        }
-    })
-
-    return {
-        state: userStore,
-        toggleFavorite: (id: number) => {
-            const array = userStore?.favorites ?? [];
-            const itemIndex = array.indexOf(id);
-            if (itemIndex === -1) {
-                array.push(id);
-            } else {
-                array.splice(itemIndex, 1);
-            }
-            patchUserStore({
-                favorites: array
-            })
-        },
-        setComment(id: number, text: string | null) {
-            const comments = userStore?.comments ?? {};
-            if (text) {
-                comments[id] = text;
-            } else {
-                delete comments[id];
-            }
-            patchUserStore({
-                comments: comments
-            })
-        }
+  useOnInit(() => {
+    if (userStore === null) {
+      setUserStore({
+        collection: {},
+      });
     }
+  });
+
+  return useMemo(
+    () => {
+        return ({
+            state: userStore,
+            collectionIds: Object.keys(userStore?.collection ?? {}).map(x => +x),
+            toggleFavorite: (item: IMovie) => {
+                const collection = userStore?.collection ?? {};
+                if (collection[item.id] === undefined) {
+                    collection[item.id] = {
+                        ...item,
+                        favorite: true,
+                        comment: "",
+                    };
+                } else {
+                    delete collection[item.id];
+                }
+                patchUserStore({
+                    collection: collection,
+                });
+            },
+            setComment(id: number, text: string | null) {
+                const collection = userStore?.collection ?? [];
+                const item = collection[id];
+                if (item) {
+                    item.comment = text ?? "";
+                }
+                patchUserStore({
+                    collection: collection,
+                });
+            },
+        })
+    },
+    [userStore]
+  );
 }

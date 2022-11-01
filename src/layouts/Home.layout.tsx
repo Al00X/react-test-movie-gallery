@@ -23,12 +23,15 @@ export default function HomeLayout() {
         <div className="flex gap-4 ml-6">
           {navLinks.map((item) => (
             <NavLink
+              key={item.text}
               to={item.link ?? ""}
               end
-              className={({isActive}) => (isActive && item.link ? "opacity-30 pointer-events-none" : "")}
+              className={({ isActive }) =>
+                isActive && item.link ? "opacity-30 pointer-events-none" : ""
+              }
             >
               <Button className="w-full" onClick={item.action}>
-                  {item.text}
+                {item.text}
               </Button>
             </NavLink>
           ))}

@@ -1,10 +1,10 @@
 import { StoreToken } from "./utilities/useStorage";
+import {UIMovie} from "./models/moviedb.models";
 
 export const AUTH_STORAGE_TOKEN = new StoreToken<{
     username: string;
 }>("auth");
 
 export const USER_STORAGE_TOKEN = new StoreToken<{
-    favorites: number[];
-    comments: {[p: number]: string};
+    collection?: {[p: number]: UIMovie}
 }>("user");

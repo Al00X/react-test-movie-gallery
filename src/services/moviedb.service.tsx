@@ -1,6 +1,6 @@
 import axios from "axios";
 import {ENVIRONMENT} from "../environment";
-import {Movie, PaginatedResponse} from "../models/moviedb.models";
+import {IMovie, PaginatedResponse} from "../models/moviedb.models";
 
 const http = axios.create({
     baseURL: ENVIRONMENT.TheMovieDbBaseUrl,
@@ -11,8 +11,8 @@ const http = axios.create({
 })
 export default function useMovieDbService() {
     return {
-        getUpcoming: () => http.get<PaginatedResponse<Movie>>('/movie/upcoming'),
-        search: (term: string) => http.get<PaginatedResponse<Movie>>('/search/movie', {
+        getUpcoming: () => http.get<PaginatedResponse<IMovie>>('/movie/upcoming'),
+        search: (term: string) => http.get<PaginatedResponse<IMovie>>('/search/movie', {
             params: {
                 query: term,
             }

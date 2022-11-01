@@ -25,13 +25,13 @@ code {
     monospace;
 }
 
-input {
+input, textarea {
   @apply text-white border border-primary-bright bg-primary-dark;
   padding: 0.5rem;
   outline: 0 !important;
   border-radius: 8px;
 }
-input:hover {
+input:hover, textarea:hover {
   filter: brightness(105%);
 }
 
