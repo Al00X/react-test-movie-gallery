@@ -7,4 +7,4 @@ export const AUTH_STORAGE_TOKEN = new StoreToken<{
 export const USER_STORAGE_TOKEN = new StoreToken<{
     favorites: number[];
     comments: {[p: number]: string};
-}>("auth");
+}>("user");

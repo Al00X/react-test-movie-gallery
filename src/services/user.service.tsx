@@ -19,7 +19,7 @@ export default function useUserService() {
         toggleFavorite: (id: number) => {
             const array = userStore?.favorites ?? [];
             const itemIndex = array.indexOf(id);
-            if (itemIndex !== -1) {
+            if (itemIndex === -1) {
                 array.push(id);
             } else {
                 array.splice(itemIndex, 1);

@@ -16,10 +16,10 @@ export default function useStorage<T>(token: StoreToken<T> | string) {
       StorageAdapter.set(token, newValue);
     },
     (newValue: Partial<T>) => {
-      const patchedValue: any = {
+      const patchedValue: T = {
         ...value ?? {},
-        newValue
-      };
+        ...newValue
+      } as any;
       setValue(patchedValue);
       StorageAdapter.set(token, patchedValue);
     }

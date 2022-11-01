@@ -7,12 +7,17 @@ import { useEffect, useState } from "react";
 import useUserService from "../services/user.service";
 import { Movie } from "../models/moviedb.models";
 import useDebounce from "../utilities/useDebounce";
+import Button from "./Button.component";
+
+interface MovieUi extends Movie {
+  favorite: boolean;
+}
 
 export default function MovieGallery(props: { searchTerm?: string }) {
   const userService = useUserService();
   const movieDbService = useMovieDbService();
 
-  const [movies, setMovies] = useState<Movie[] | undefined>(undefined);
+  const [movies, setMovies] = useState<MovieUi[] | undefined>(undefined);
   const debouncedSearchTerm = useDebounce<
     string | undefined
   >(props.searchTerm ?? undefined, 300);
@@ -20,13 +25,13 @@ export default function MovieGallery(props: { searchTerm?: string }) {
   const [allMovies, getAllMovies, allMoviesRequestState] = usePromise(
     () => movieDbService.getUpcoming(),
     (result) => {
-      setMovies(result.data.results);
+      updateMovies(result.data.results);
     }
   );
   const [searchedMovies, doSearch, searchRequestState] = usePromise(
     () => movieDbService.search(props.searchTerm!),
     (result) => {
-      setMovies(result.data.results);
+      updateMovies(result.data.results);
     }
   );
 
@@ -36,7 +41,7 @@ export default function MovieGallery(props: { searchTerm?: string }) {
 
   useEffect(() => {
     if (debouncedSearchTerm === "") {
-      setMovies(allMovies?.data.results ?? undefined);
+      updateMovies(allMovies?.data.results ?? undefined);
     }
     if ((debouncedSearchTerm ?? "").length >= 3) {
       doSearch();
@@ -44,6 +49,23 @@ export default function MovieGallery(props: { searchTerm?: string }) {
       // setMovies(undefined);
     }
   }, [debouncedSearchTerm]);
+
+  function updateMovies(movies: Movie[] | undefined) {
+    if (movies === undefined) {
+      setMovies(undefined);
+      return;
+    }
+    const userFavorites = userService.state?.favorites ?? [];
+    setMovies(movies.map(x => ({
+      ...x,
+      favorite: userFavorites.includes(x.id)
+    })))
+  }
+
+  function toggleMovieFavorite(item: MovieUi) {
+    userService.toggleFavorite(item.id);
+    item.favorite = !item.favorite;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
@@ -60,8 +82,9 @@ export default function MovieGallery(props: { searchTerm?: string }) {
           {movies!.map((item, index) => (
             <div
               key={item.id}
-              className="ui-panel w-full h-full cursor-pointer py-8 rounded-xl p-0 flex flex-col items-center"
+              className="ui-panel relative w-full h-full cursor-pointer py-8 rounded-xl p-0 flex flex-col items-center"
             >
+              <Button className={`${item.favorite ? 'bg-error text-white border-white' : 'text-primary-bright'} absolute left-2 top-2 text-xs p-1`} onClick={() => toggleMovieFavorite(item)}>Favorite</Button>
               <div
                 className="overflow-hidden rounded-lg"
                 style={{ width: 300, height: 450 }}
