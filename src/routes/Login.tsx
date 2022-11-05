@@ -17,7 +17,7 @@ export default function Login() {
     (result) => {
       if (result) {
         setTimeout(() => {
-          navigator('/');
+          // navigator('/');
         }, 5000);
       }
     }
@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="ui-panel gap-6 p-24 w-1/4">
+      <div className="ui-panel gap-6 p-24 w-3/4 lg:w-1/4">
         <input
           className="w-full"
           value={username}
